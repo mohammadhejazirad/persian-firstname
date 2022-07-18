@@ -1,5 +1,5 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.3",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -12,10 +12,8 @@
   },
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build",
     "test": "tsdx test",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
@@ -56,5 +54,13 @@
   "dependencies": {
     "@persian-tools/persian-tools": "^3.4.0",
     "better-sqlite3": "^7.6.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohammadhejazirad/persian-firstname"
+  },
+  "bugs": {
+    "url": "https://github.com/mohammadhejazirad/persian-firstname/issues"
+  },
+  "homepage": "https://github.com/mohammadhejazirad/persian-firstname"
 }
