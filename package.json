@@ -1,5 +1,5 @@
 {
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -17,6 +17,13 @@
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
+  "keywords": [
+    "name",
+    "irani",
+    "iran",
+    "persianName",
+    "firstName"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
@@ -42,11 +49,11 @@
     }
   ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^7.0.8",
-    "@types/better-sqlite3": "^7.5.0",
-    "@types/node": "^18.0.6",
+    "@size-limit/preset-small-lib": "^8.0.1",
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^18.7.6",
     "husky": "^8.0.1",
-    "size-limit": "^7.0.8",
+    "size-limit": "^8.0.1",
     "tsdx": "^0.14.1",
     "tslib": "^2.4.0",
     "typescript": "^4.7.4"

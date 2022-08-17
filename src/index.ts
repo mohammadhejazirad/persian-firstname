@@ -4,12 +4,11 @@ import {
   GetNamesOptions,
   FindNameOptions,
   GetGenderName,
-  RandomName,
 } from './main_interface';
 import Utils from './utils';
 
 export default class PersianNames {
-  public static validationPersianName(
+  public static validation(
     name: string,
     options?: ValidationPersianName
   ): boolean {
@@ -27,9 +26,14 @@ export default class PersianNames {
   }
 
   public static getNames(options?: GetNamesOptions): any {
-    const names = DatabaseUtils.getAllDataInTable({
+    const pagination = options?.limitation;
+    const names = DatabaseUtils.getDataInTablePaging({
       select: '*',
       table: 'names',
+      limit: {
+        limit: pagination?.limit,
+        offset: pagination?.offset,
+      },
     });
 
     const data: any = [];
@@ -39,9 +43,14 @@ export default class PersianNames {
       let name = options?.getParamsData?.name == false ? null : item.name;
       let gender = options?.getParamsData?.gender == false ? null : item.gender;
       let rate = options?.getParamsData?.rate == false ? null : item.rate;
+      const my_gender_type = options?.myTypeGender;
 
-      if (gender && options?.genderType)
+      if (gender && my_gender_type)
+        gender = Utils.convertCustomGenderType(gender, my_gender_type);
+
+      if (gender && options?.genderType && !my_gender_type)
         gender = Utils.convertGenderType(gender, options?.genderType);
+
       if (rate && options?.rateType)
         rate = Utils.convertRateType(rate, options?.rateType);
 
@@ -67,6 +76,7 @@ export default class PersianNames {
     const showErrorMessage = options?.showErrorMessage;
     const trimName = options?.trimName;
     const countAlphabets = options?.countAlphabets;
+    const my_gender_type = options?.myTypeGender;
 
     if (trimName) name = Utils.trimName(name);
     if (countAlphabets?.start || countAlphabets?.end) {
@@ -88,7 +98,13 @@ export default class PersianNames {
     if (!get_name && consoleLog) console.log(`${name} Not Found`);
     if (!get_name) return undefined;
 
-    if (genderType)
+    if (!getParamsData?.gender && my_gender_type)
+      get_name.gender = Utils.convertCustomGenderType(
+        get_name.gender,
+        my_gender_type
+      );
+
+    if (genderType && !my_gender_type)
       get_name.gender = Utils.convertGenderType(get_name.gender, genderType);
 
     if (rateType)
@@ -114,6 +130,7 @@ export default class PersianNames {
     const showErrorMessage = options?.showErrorMessage;
     const trimName = options?.trimName;
     const countAlphabets = options?.countAlphabets;
+    const my_gender_type = options?.myTypeGender;
     const get_name: any = [];
     if (typeof names == 'string') names = [names];
 
@@ -141,7 +158,13 @@ export default class PersianNames {
       if (!to_name && consoleLog) console.log(`${name} Not Found`);
       if (!to_name) return;
 
-      if (genderType)
+      if (getParamsData?.gender && my_gender_type)
+        to_name.gender = Utils.convertCustomGenderType(
+          to_name.gender,
+          my_gender_type
+        );
+
+      if (genderType && !my_gender_type)
         to_name.gender = Utils.convertGenderType(to_name.gender, genderType);
 
       if (rateType)
@@ -168,10 +191,11 @@ export default class PersianNames {
     const convertToPersian = options?.convertToPersian;
     const gender = options?.genderType;
     const typeCheck = options?.typeCheck;
+    const my_gender_type = options?.myTypeGender;
     const get_name: any = [];
     let typeName = 'string[]';
 
-    if (typeof names == 'string') {
+    if (typeof names === 'string') {
       typeName = 'string';
       names = [names];
     }
@@ -194,7 +218,13 @@ export default class PersianNames {
 
       if (!to_name) return;
 
-      if (gender)
+      if (my_gender_type)
+        to_name.gender = Utils.convertCustomGenderType(
+          to_name.gender,
+          my_gender_type
+        );
+
+      if (gender && !my_gender_type)
         to_name.gender = Utils.convertGenderType(to_name.gender, gender);
 
       delete to_name.id;
@@ -205,37 +235,6 @@ export default class PersianNames {
     });
 
     if (typeName == 'string') return get_name[0];
-    return get_name;
-  }
-
-  public static randomName(options?: RandomName) {
-    const firstLetterName =
-      options?.firstLetterName || Utils.alphabetFarsiRandom();
-    const genderType = options?.genderType;
-    const countOfNames = options?.countOfNames == 0 ? 1 : options?.countOfNames;
-    const rateType = options?.rateType;
-    const getParamsData = options?.getParamsData;
-    const get_name: any = [];
-    const all_name = DatabaseUtils.getAllDataInTable({
-      select: '*',
-      table: 'names',
-    });
-    all_name.forEach((item: any) => {
-      if (firstLetterName && item.name.charAt(0) != firstLetterName) return;
-      if (genderType)
-        item.gender = Utils.convertGenderType(item.gender, genderType);
-      if (rateType) item.rate = Utils.convertRateType(item.rate, rateType);
-
-      if (getParamsData) {
-        if (getParamsData.id == false) delete item.id;
-        if (getParamsData.name == false) delete item.name;
-        if (getParamsData.gender == false) delete item.gender;
-        if (getParamsData.rate == false) delete item.rate;
-      }
-
-      get_name.push(item);
-    });
-    if (countOfNames) return get_name.splice(0, countOfNames);
     return get_name;
   }
 }

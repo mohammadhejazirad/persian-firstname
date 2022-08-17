@@ -17,6 +17,19 @@ export interface GenderType {
   gender: 'number' | 'stringEn' | 'stringFa' | 'stringArb' | 'stringEmoji';
 }
 
+export interface CustomGenderType {
+  myTypeGender?: {
+    male?: string;
+    female?: string;
+    both?: string;
+  };
+}
+export interface MyTypeGender {
+  male?: string;
+  female?: string;
+  both?: string;
+}
+
 export interface RateType {
   rate: 'number' | 'stringEn' | 'stringFa';
 }
@@ -43,16 +56,28 @@ export interface ValidationPersianName {
   trimName?: boolean;
 }
 
-export interface GetNamesOptions extends ParamsData, TypeData {}
+export interface Limit {
+  limitation?: {
+    limit: number;
+    offset: number;
+  };
+}
+
+export interface GetNamesOptions
+  extends ParamsData,
+    TypeData,
+    CustomGenderType,
+    Limit {}
 
 export interface FindNameOptions
   extends ParamsData,
     TypeData,
+    CustomGenderType,
     ShowErrorMessage,
     ValidationPersianName,
     IncludeName {}
 
-export interface GetGenderName extends ValidationPersianName {
+export interface GetGenderName extends ValidationPersianName, CustomGenderType {
   genderType?:
     | GenderType
     | 'number'
@@ -62,7 +87,3 @@ export interface GetGenderName extends ValidationPersianName {
     | 'stringEmoji';
 }
 
-export interface RandomName extends TypeData, ParamsData {
-  countOfNames?: number;
-  firstLetterName?: string;
-}

@@ -6,7 +6,18 @@ export interface FindToTable {
   value: string;
 }
 
+export interface Limitation {
+  limit?: {
+    limit?: number;
+    offset?: number;
+  };
+}
 export interface GetAllDataTable {
+  table: string;
+  select: string[] | '*';
+}
+
+export interface GetDataTablePaging extends Limitation {
   table: string;
   select: string[] | '*';
 }

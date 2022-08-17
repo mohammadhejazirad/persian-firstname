@@ -1,6 +1,6 @@
 // import * as path from 'path';
 import Database from 'better-sqlite3';
-import { FindToTable, GetAllDataTable } from './interfaces';
+import { FindToTable, GetAllDataTable, GetDataTablePaging } from './interfaces';
 import * as fs from 'fs';
 export default class DatabaseUtils {
   constructor(databaseAddress?: string, databaseName?: string) {
@@ -40,5 +40,23 @@ export default class DatabaseUtils {
       .prepare(`SELECT ${options.select} FROM ${options.table}`)
       .all();
     return data;
+  }
+  public static getDataInTablePaging(
+    options: GetDataTablePaging
+  ): Array<object> {
+    if (options.limit?.limit && options.limit?.offset) {
+      const limit = options.limit?.limit;
+      const offset = options.limit?.offset;
+
+      return this.db
+        .prepare(
+          `SELECT ${options.select} FROM ${options.table} LIMIT ${limit} OFFSET ${offset}`
+        )
+        .all();
+    }
+
+    return this.db
+      .prepare(`SELECT ${options.select} FROM ${options.table}`)
+      .all();
   }
 }

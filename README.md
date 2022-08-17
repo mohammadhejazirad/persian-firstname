@@ -35,14 +35,14 @@ const PersianName = require('persian-firstname').default;
 Validation Persian Name:
 
 ```javascript
-const is_name = PersianName.validationPersianName('آرش');
+const is_name = PersianName.validation('آرش');
 console.log(is_name); //true  or  false
 ```
 
 using options
 
 ```javascript
-const is_name = PersianName.validationPersianName('امیر', {
+const is_name = PersianName.validation('امیر', {
   convertToPersian: true, // ي ==> ی (using package @persian-tools)
   typeCheck: 'exact', //include type or exact type for find name
   trimName: true, //trim name before validation (remove space and A-Z characters and emojis and ...)
@@ -71,7 +71,7 @@ using options:
 
 ```javascript
 const get_names = PersianName.getNames({
-  genderType: 'stringFa', // default is "number"
+  genderType: 'stringFa', // default is "number" => or using myTypeGender,
   rateType: 'stringFa', // default is "number"
   getParamsData: {
     // return param data
@@ -80,6 +80,10 @@ const get_names = PersianName.getNames({
     name: true,
     gender: true,
     rate: true,
+  },
+  limitation: {
+    limit: 100,
+    offset: 10,
   },
 });
 console.log(get_names);
@@ -92,22 +96,7 @@ console.log(get_names);
 */
 ```
 
-Rate Types:
-| value | stringEn type | number type | stringFa type
-|---|---|---|---|
-| 1 |very practical|1|پر کاربردی|
-| 2 |normal|2|معمولی|
-| 3 |very rare| 3| بسیار نادر|
 
-Gender Types:
-
-| value | genderTypeEn | genderTypeFa | genderTypeNumber | genderTypeEmoji | genderTypeArb |
-| ----- | ------------ | ------------ | ---------------- | --------------- | ------------- |
-| 1     | Male         | مرد          | 1                | ♂️              | مذکر          |
-| 2     | Female       | زن           | 2                | ♀️              | مونت          |
-| 3     | Both         | هر دو        | 3                | ♂️♀️            | هر دو         |
-
-##
 
 Find Name:
 
@@ -140,27 +129,51 @@ console.log(get_gender_name);
 // return { gender: 'زن' }
 ```
 
+## options:
+
+|    **Options**   |                                   **Description**                                  |                                     **type support**                                     |    **Default**   |
+|:----------------:|:----------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:----------------:|
+| convertToPersian |                         convert alphabet arabic to persian                         |                                     boolean,undefined                                    |       false      |
+|     typeCheck    |                      include type or exact type for find name                      |                                     'exact','include'                                    |       exact      |
+|     trimName     | _trim name before validation (remove space and A-Z characters and emojis and ...)_ |                                     boolean,undefined                                    |       false      |
+|   myTypeGender   |                  _custom gender (male,female,both) show in result_                 |                    undefined, male:string, female:string, both:string,                   |     undefined    |
+|    genderType    |                           _convert gender name for show_                           | undefined, genderTypeEn, genderTypeFa, genderTypeNumber, genderTypeEmoji, genderTypeArb, | genderTypeNumber |
+|     rateType     |                            _convert rate name for show_                            |                     undefined, rateTypeNumber, rateTypeEn, rateTypeFa                    |  rateTypeNumber  |
+|   getParamsData  |                     _items that can be displayed in the output_                    |                  undefined, id:bool, name:bool, gender:bool, rate:bool,                  |     undefined    |
+| showErrorMessage |                    _if not find name => (*name*) not found name_                   |                                     boolean,undefined                                    |       false      |
+|    consoleLog    |                _if not find name sow console log (*name*) find name_               |                                     boolean,undefined                                    |       false      |
+|    limitation    |                               _limit for show names_                               |                          undefined, limit:number, offset:number                          |     undefined    |
+
+Rate Types:
+| value | stringEn type | number type | stringFa type
+|---|---|---|---|
+| 1 |very practical|1|پر کاربردی|
+| 2 |normal|2|معمولی|
+| 3 |very rare| 3| بسیار نادر|
+
+Gender Types:
+
+| value | genderTypeEn | genderTypeFa | genderTypeFa2 | genderTypeNumber | genderTypeEmoji | genderTypeArb |
+| ----- | ------------ | ------------ | ------------- | ---------------- | --------------- | ------------- |
+| 1     | Male         | مرد          | آقا           | 1                | ♂️              | مذکر          |
+| 2     | Female       | زن           | خانم          | 2                | ♀️              | مونت          |
+| 3     | Both         | هر دو        | هر دو         | 3                | ♂️♀️            | هر دو         |
+
 ##
 
-Random Name:
+##
 
-```javascript
-const random_name = PersianName.randomName({
-  // previous duplicate options
-  firstLetterName: 'م', // first letter name
-  countOfNames: 5, // number of names
-});
-console.log(random_name);
-/** 
- *  return   [
-      { id: 4132, name: 'مأمون', gender: 1, rate: 3 },
-      { id: 4133, name: 'مائده', gender: 2, rate: 1 },
-      { id: 4134, name: 'ماتیار', gender: 1, rate: 3 },
-      { id: 4135, name: 'ماتیسا', gender: 2, rate: 3 },
-      { id: 4136, name: 'ماتینا', gender: 2, rate: 3 }
-    ]
- */
-```
+### changes and update in version 0.1.4
+
+1- Added myTypeGender option
+
+2- Change Name Method validationPersianName to validation
+
+3- Added options limitation for getNames method
+
+4- remove method randomName
+
+5- update documentation
 
 ---
 

@@ -3,7 +3,11 @@ import {
   hasPersian,
   toPersianChars,
 } from '@persian-tools/persian-tools';
-import { GenderType, RateType } from './main_interface';
+import {
+  GenderType,
+  MyTypeGender,
+  RateType,
+} from './main_interface';
 const typesOptions = require('./types.json');
 export default class Utils {
   public static isPersianText(text: string): boolean {
@@ -55,6 +59,24 @@ export default class Utils {
         if (genderId == 2) return typesOptions.genderTypeEmoji[3];
         else return genderId;
 
+      default:
+        return genderId;
+    }
+  }
+
+  public static convertCustomGenderType(
+    genderId: string | number,
+    type: MyTypeGender
+  ) {
+    const [male, female, both] = [type.male, type.female, type.both];
+
+    switch (genderId) {
+      case 1:
+        return male ? male : genderId;
+      case 2:
+        return female ? female : genderId;
+      case 3:
+        return both ? both : genderId;
       default:
         return genderId;
     }
