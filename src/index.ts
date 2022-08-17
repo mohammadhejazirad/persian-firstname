@@ -98,7 +98,7 @@ export default class PersianNames {
     if (!get_name && consoleLog) console.log(`${name} Not Found`);
     if (!get_name) return undefined;
 
-    if (!getParamsData?.gender && my_gender_type)
+    if (my_gender_type)
       get_name.gender = Utils.convertCustomGenderType(
         get_name.gender,
         my_gender_type
@@ -158,7 +158,7 @@ export default class PersianNames {
       if (!to_name && consoleLog) console.log(`${name} Not Found`);
       if (!to_name) return;
 
-      if (getParamsData?.gender && my_gender_type)
+      if (my_gender_type)
         to_name.gender = Utils.convertCustomGenderType(
           to_name.gender,
           my_gender_type
